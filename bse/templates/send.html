@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+    <section class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-offset-3 col-sm-6 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                <h2>Verify email</h2>
+                </div>
+                <p>There’s still one more step to get started! We’ve sent you a verification email.</p>
+                <p>Please go to check your inbox and click the link to verify your email address.</p>
+                <label>Your register email: {{ email }}</label><br>
+                  <p>If you still haven’t received the email,please check the spam folder or change the email to try again.
+Tnb.fund is the only official website of TNB, TNB Tokens project. Should you have any questions, please email us at contract.timenb for clarifications or confirmation. Neither tnb.fund nor our customer service would ever ask for details of your private key or verification btn in any case. Please do not give away any of your private info to anyone. Thank you!</p>
+                <form class="form-horizontal" method="post" id="send-form">
+                    {% csrf_token %}
+                  <input type="hidden" name="mail" value="{{ email }}">
+                  <button type="button" class="btn btn-block" id="resend"><span id="countdown_time">60</span>  second</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock %}

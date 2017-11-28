@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white tab-content">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>Sign Up</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <form class="form-horizontal" method="post" id="signup-form">
+                    {% csrf_token %}
+                  <div class="col-md-offset-3 col-sm-6">
+                    <div class="form-group">
+                      <input type="email" class="form-control" placeholder="Email address" name="username">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" placeholder="Password" name="password1">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" placeholder="Confirm Password" name="password2">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Invitation code (optional)" name="code" value="{{ request.GET.code }}">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-block" id="create" data-toggle="modal" data-target="#myModal">Create Account</button>
+                    </div>
+                  </div>
+				  <div class="col-md-offset-3 col-sm-6">
+                    <p class="">If you have an account, <a href="/login">Login Now</a></p>
+				  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p class="modal-title" id="myModalLabel">Please read and agree to the document</p>
+      </div>
+      <div class="modal-body pre-scrollable">
+        Compliance with applicable laws and regulations.
+You are not eligible to and you shall not purchase TNB through its token sale if you are a citizen or resident (tax or otherwise) of any country or state where the purchase of TNB or similar Crypto Token may be prohibited or the token sale is deemed to be not compliant with the applicable laws and regulations.
+*Residents of People’s Republic of China and USA cannot purchase TNB.
+Compliance with Anti Money Laundering (AML) and Counter Finance Terrorism (CFT)
+I have read the latest version of the Whitepaper, Acceptable Use Policy, Terms and Conditions for Participants, Privacy Policy and I understand the contents stated in these documents.
+I agree that I will not, under any circumstances, participate in any form of money laundering or financing terrorism activities by using TNB Token. am not a politically exposed person (PEP).
+I have not been subjected to any regulatory sanctions.
+The state or country where I am based in complies with regulations of Anti Money Laundering (AML).
+Risk Acknowledgement
+I am contributing entirely at my own risk.
+I agree I would not participate in any money laundering and financing terrorism activities by using TNB Token
+Due to the inherent high-risk nature of cryptocurrency markets and ICOs, acquiring the TNB Token does not provide safety of principle, no income, no interest and no guaranteed growth.
+I have read and agree with the whitepaper, the Acceptable Use Policy, the Privacy Policy documents.
+I have read, understood and agree with the statement above and do agree to comply with any laws or regulations enforcing Anti-Money Laundering (AML) and Counter Financing Terrorism (CFT).
+I have read, understood and agree with the statement above regarding Acknowledgement of Risk
+I am fully aware and agree that I must be identified through a KYC (Know Your Customer) process in order to withdraw my TNB Tokens
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-block" id="signup">I agree and Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </section>
+
+{% endblock %}

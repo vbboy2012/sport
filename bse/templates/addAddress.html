@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h3>SEC TOKEN</h3>
+                </div>
+                  <label>Accepted Currency: Ethereum</label><br>
+                  <label>Token Contribution Price will be: 1 ETH = 20,000 SEC</label><br>
+                  <label>SEC Token Contribution Event will only be conducted in ETH</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <form class="form-horizontal" method="post" id="address-form">
+                    {% csrf_token %}
+                  <div class="col-md-offset-3 col-sm-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="ETH address" name="address">
+                    </div>
+                      <div class="form-group">
+                      <button type="button" class="btn btn-block" id="add-address">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

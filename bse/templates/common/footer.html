@@ -1,0 +1,197 @@
+{% load staticfiles %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <!-- <script src="https://code.jquery.com/jquery.js"></script> -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/smoothscroll.js' %}"></script>
+	<script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
+	<script src="{% static 'js/jquery.localScroll.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nav.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static 'js/jquery.parallax.js' %}"></script>
+    <script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
+    <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'js/matchMedia.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <script src="{% static 'js/wow.js' %}"></script>
+    <script src="{% static 'js/easing.js' %}"></script>
+
+    <script>
+    	$(document).ready(function() {
+		// "use strict";
+        $('#banner').parallax("50%", 0.5, true);
+    		$('#feature').parallax("50%", 0.5, true);
+    		$('#video').parallax("50%", 0.5, true);
+    		$('#subscription').parallax("50%", 0.5, true);
+    		$('#review').parallax("50%", 0.5, true);
+    		$('#download').parallax("50%", 0.5, true);
+            $('#footer').parallax("50%", 0.5, true);
+    	});
+    	$(document).keyup(function(event){
+          if(event.keyCode ==13){
+            $("#login").trigger("click");
+          }
+        });
+
+        $(function () {
+            $("a[name='login']").click(function () {
+                window.location.href = '/login';
+            });
+        })
+        $(function () {
+            $("a[name='user']").click(function () {
+                window.location.href = '/user';
+            });
+        })
+        $(function () {
+            $("a[name='logout']").click(function () {
+                window.location.href = '/logout';
+            });
+        })
+        $(function () {
+            $("#back").click(function () {
+                window.location.href = '/';
+            });
+        })
+
+        $("#create").click(function () {
+           var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            var email = $("input[name='username']").val();
+            if (email == ""){
+                alert("The email address can not be empty");
+                return false;
+            }
+            if (!reg.test(email)){
+                alert("Please enter the correct email address");
+                return false;
+            }
+            var pass1 = $("input[name='password1']").val();
+            if (pass1 == ""){
+                alert("Password can not be empty");
+                return false;
+            }
+            var pass2 = $("input[name='password2']").val();
+            if (pass2 == ""){
+                alert("Please enter your password again");
+                return false;
+            }
+            if(pass1 != pass2){
+                alert("Two passwords are different");
+                return false;
+            }
+        });
+
+        $("#signup").click(function () {
+            var data = $("#signup-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'register' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        alert("Account with this email already exist!")
+                    }
+                    else if(result.status == 2){
+                        //verification email.
+                        location.href = '/send?email='+result.email;
+                    }
+                },
+            });
+        })
+
+        $("#login").click(function () {
+            var email = $("input[name='username']").val();
+            if (email == ""){
+                alert("The email address can not be empty");
+                return false;
+            }
+            var password = $("input[name='password']").val();
+            if (password == ""){
+                alert("The password can not be empty");
+                return false;
+            }
+            var data = $("#login-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'login' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = '/';
+                    }
+                    else if(result.status == 2){
+                        alert("The account was frozen")
+                    }
+                    else if(result.status == 3){
+                        alert("Incorrect email or password")
+                    }
+                },
+            });
+        });
+
+        $("#add-address").click(function () {
+            var address = $("input[name='address']").val();
+            if (address == ""){
+                alert("The ETH address can not be empty");
+                return false;
+            }
+            var data = $("#address-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addAddress' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = '/user';
+                    }
+                    else if(result.status == 2){
+                        alert("This ETH address already exists")
+                    }
+                },
+            });
+        });
+
+
+        $(function() {
+            //设置时间倒计时
+            $("#resend").attr('disabled',true);
+            setCountDown_time();
+        })
+        /*时间倒计时*/
+        var sec = 60
+        var idt;
+        function setCountDown_time() {
+            idt = window.setInterval("ls();", 1000);
+        }
+        function ls() {
+            sec--;
+            if(parseInt(sec) == 0) {
+                window.clearInterval(idt);
+                $("#countdown_time").text("Resend an email");
+                $("#resend").attr('disabled',false);
+            }else{
+                $("#countdown_time").text(sec);
+            }
+        }
+
+        $("#resend").click(function () {
+            var data = $("#send-form").serialize();
+            $("#resend").attr('disabled',true);
+            sec = 60;
+            setCountDown_time();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'send' %}",
+                data: data,
+                success: function (result) {
+                    if (result == "1"){
+                        alert("Send mail successfully!")
+                    }
+                },
+            });
+        });
+
+    </script>

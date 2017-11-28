@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+    <section class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-offset-3 col-sm-6 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>activate</h2>
+                </div>
+                  {% if message == 1 %}
+                    <label>Sorry, Verify mail timeout!</label>
+                  {% elif message == 2 %}
+                    <label>Sorry, Verify Email address not found!</label>
+                  {% elif message == 3 %}
+                    <label>Thank you! Your email address has been successfully verified.</label>
+                    <p>Tnb.fund is the only official website of TNB, TNB Tokens project. Should you have any questions, please email us at contract.timenb for clarifications or confirmation. Neither tnb.fund nor our customer service would ever ask for details of your private key or verification codes in any case. Please do not give away any of your private info to anyone. Thank you!</p>
+                    <button type="button" class="btn btn-block">Get verified now by submitting your info</button>
+                  {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock %}
