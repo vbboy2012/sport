@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>TOKEN SALE</h2>
+                </div>
+                  <label>{% if stage == 1 %}
+                        私募已经启动
+                      {% elif stage == 2 %}
+                        公开认筹已经启动
+                      {% elif stage == 3 %}
+                        令牌售卖已经结束
+                  {% endif %}</label><br>
+                  <label>可接受的货币: Ethereum</label><br>
+                  <label>令牌私募参阶段考价格: 1 ETH = {{ privatePrice }} DCB</label><br>
+                  <label>令牌公开售卖参考价格: 1 ETH = {{ publicPrice }} DCB</label><br>
+                  {% if stage != 3 %}
+                  <label>公开售卖时间(新加坡时间)</label><br>
+                  <label>{{ countdown|date:"Y-m-d H:i:s" }}-{{ endDate|date:"Y-m-d H:i:s" }}</label>
+                  {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-offset-3 col-sm-6">
+			    <div id="countdown">
+					<div class="timeBox">
+						<div class="days">00</div>
+						天
+					</div>
+					<div class="timeBox">
+						<div class="hours">00</div>
+						小时
+					</div>
+					<div class="timeBox">
+						<div class="minutes">00</div>
+						分钟
+					</div>
+					<div class="timeBox">
+						<div class="seconds">00</div>
+						秒
+					</div>
+				</div>
+              </div>
+                </div>
+            <div class="row" style="margin-top: 20px;{% if stage == 1 %}
+                display: none;
+                {% else %}
+                display: block;
+            {% endif %}">
+                <div class="col-md-offset-3 col-sm-6">
+                  <p class="text-center">{{ privateCount }} DCB</p>
+                  <div class="progress">
+                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+                        <span class="sr-only">20% Complete</span>
+                      </div>
+                  </div>
+                </div>
+            </div>
+              <div class="row">
+                <div class="col-md-offset-3 col-sm-6">
+                    <table class="table table-striped">
+                    <caption><h3>认筹记录</h3></caption>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>ETH</th>
+                      <th>DCB</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for token in tokens %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ token.eth_num }}</td>
+                          <td>{{ token.dcb_num }}</td>
+                          <td>{% if user.status %}
+                            已释放
+                            {% else %}
+                            待释放
+                        {% endif %}</td>
+                        </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                </div>
+              </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block footer %}
+{% include 'common/footer.html' %}
+    <script src="{% static 'js/countdown.jquery.js' %}"></script>
+    <script>
+        $(function() {
+            var isStart = {{ isStart }};
+            if(isStart == 1){
+                 $('#countdown').adddown({date: '{{ countdown|date:"Y/m/d H:i:s" }}',endDate:'{{ endDate|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+            }else if(isStart == 0){
+                    $('#countdown').countdown({date: '{{ countdown|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+
+            } else if(isStart == 2){
+                    $('#countdown').endtime({date: '{{ countdown|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+
+            }
+		});
+    </script>
+{% endblock %}

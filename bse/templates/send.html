@@ -12,16 +12,15 @@
               <div class="col-md-offset-3 col-sm-6 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                <h2>Verify email</h2>
+                <h2>验证邮箱</h2>
                 </div>
-                <p>There’s still one more step to get started! We’ve sent you a verification email.</p>
-                <p>Please go to check your inbox and click the link to verify your email address.</p>
-                <label>Your register email: {{ email }}</label><br>
-                  <p>If you still haven’t received the email,please check the spam folder or change the email to try again.
-Tnb.fund is the only official website of TNB, TNB Tokens project. Should you have any questions, please email us at contract.timenb for clarifications or confirmation. Neither tnb.fund nor our customer service would ever ask for details of your private key or verification btn in any case. Please do not give away any of your private info to anyone. Thank you!</p>
+                <p>我们已经给你发了一封验证邮件。</p>
+                <p>请去检查你的收件箱，点击链接来验证你的邮箱地址。</p>
+                <label>你注册的邮箱: {{ email }}</label><br>
+                  <p>如果您还没有收到电子邮件，请检查垃圾邮件文件夹或更改电子邮件再试一次</p>
                 <form class="form-horizontal" method="post" id="send-form">
                     {% csrf_token %}
-                  <input type="hidden" name="mail" value="{{ email }}">
+                  <input type="hidden" name="email" value="{{ email }}">
                   <button type="button" class="btn btn-block" id="resend"><span id="countdown_time">60</span>  second</button>
                 </form>
               </div>
@@ -29,4 +28,48 @@ Tnb.fund is the only official website of TNB, TNB Tokens project. Should you hav
           </div>
         </div>
     </section>
+{% endblock %}
+
+{% block footer %}
+{% include 'common/footer.html' %}
+    <script>
+        $(function() {
+            //设置时间倒计时
+            $("#resend").attr('disabled',true);
+            setCountDown_time();
+        })
+        /*时间倒计时*/
+        var sec = 60
+        var idt;
+        function setCountDown_time() {
+            idt = window.setInterval("ls();", 1000);
+        }
+        function ls() {
+            sec--;
+            if(parseInt(sec) == 0) {
+                window.clearInterval(idt);
+                $("#countdown_time").text("Resend an email");
+                $("#resend").attr('disabled',false);
+            }else{
+                $("#countdown_time").text(sec);
+            }
+        }
+
+    $("#resend").click(function () {
+            var data = $("#send-form").serialize();
+            $("#resend").attr('disabled',true);
+            sec = 60;
+            setCountDown_time();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'send' %}",
+                data: data,
+                success: function (result) {
+                    if (result == "1"){
+                        alert("Send mail successfully!")
+                    }
+                },
+            });
+        });
+    </script>
 {% endblock %}

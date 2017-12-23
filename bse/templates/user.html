@@ -12,20 +12,30 @@
               <div class="col-sm-12 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                  <h2>Account Information</h2>
+                  <h2>账户信息</h2>
                 </div>
               </div>
-                <div class="col-md-offset-3 col-sm-6">
-                    <table class="table">
+              <div class="col-md-offset-3 col-sm-6">
+                <table class="table">
                       <tbody>
                         <tr>
-                          <td>ID verification</td>
-                          <td><label><a href="/verifyInfo">Info submission needed</a></label></td>
+                        <tr>
+                          <td>我的令牌</td>
+                          <td><label>{{ request.user.dcb_count }} DCB <a href="/token">Token record</a></label></td>
+                        </tr>
+                          <td>身份验证</td>
+                          <td><label>{% if request.user.is_kyc %}
+                               验证成功!
+                             {% elif kyc == None %}
+                               <a href="/verifyInfo">提交必要的信息</a>
+                              {% else %}
+                              等待验证!
+                          {% endif %}</label></td>
                         </tr>
                         <tr>
                           <td>ETH address</td>
                           <td><label>{% if not request.user.eth_address %}
-                              <a href="/addAddress">Submit ETH address</a>
+                              null
                               {% else %}
                               {{ request.user.eth_address }}
                           {% endif %}</label></td>
@@ -33,21 +43,50 @@
                         <tr>
                           <td>Email address</td>
                           <td><label>{{ request.user.username }} {% if not request.user.checkEmail %}
-                          <a href="/send?email={{ request.user.username }}">Need to verify mail</a>
+                          <a href="/send?email={{ request.user.username }}">Need to verify email</a>
                           {% endif %}</label></td>
                         </tr>
                         <tr>
-                          <td>Reseller Link</td>
-                          <td><label>http://127.0.0.1:8000/register/?code={{ request.user.icode }}</label></td>
+                          <td>邀请连接</td>
+                          <td><label><a href="http://127.0.0.1:8000/register/?code={{ request.user.icode }}">http://127.0.0.1:8000/register/?code={{ request.user.icode }}</a></label></td>
                         </tr>
                         <tr>
-                          <td>Invitation code</td>
+                          <td>邀请码</td>
                           <td><label>{{ request.user.icode }}</label></td>
                         </tr>
                       </tbody>
                     </table>
-                <p>You can get 2%(total capital) awards to resend this code to your friends</p>
-                </div>
+                <p>将此邀请码发送给朋友，你可以得到5%（投资总额）的奖励</p>
+                <hr>
+                <table class="table table-striped">
+                    <caption><h3>我推荐的用户</h3></caption>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>用户</th>
+                      <th>奖金(DCB)</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.dcb_bonus }}</td>
+                        <td>{% if user.status %}
+                            已释放
+                            {% else %}
+                            待释放
+                        {% endif %}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              <br>
+               <a class="btn btn-block" href="/logout">退出</a>
+              <br>
+              </div>
             </div>
           </div>
         </div>

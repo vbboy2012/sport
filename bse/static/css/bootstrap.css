@@ -123,6 +123,7 @@ button {
 button,
 select {
   text-transform: none;
+  background: none;
 }
 button,
 html input[type="button"],

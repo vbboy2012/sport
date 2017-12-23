@@ -12,41 +12,70 @@
               <div class="col-sm-12 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                  <h2>Login</h2>
+                  <h2>身份验证</h2>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <form class="form-horizontal" role="form">
-                  <div class="col-sm-6">
+                <form class="form-horizontal" action="verifyInfo" method="post" id="id-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="col-md-offset-3 col-sm-6">
                     <div class="form-group">
                       <div class="span-form">
-                        <input class="form-control" type="text" placeholder="First name" required="required">
+                        <input class="form-control" type="text" placeholder="First name" name="firstName" value="{{ kyc.first_name }}">
                       </div>
                       <div class="span-form">
-                        <input type="text" class="form-control" placeholder="Last name" required="required">
+                        <input type="text" class="form-control" placeholder="Last name" name="lastName" value="{{ kyc.last_name }}">
                       </div>
                     </div>
                     <div class="form-group">
-                      <input type="email" class="form-control" placeholder="Email address" required="required">
+                        <select name="country" class="form-control">
+                        <option value="">请选择国家</option>
+                            {% for c in countryList %}
+                                <option value="{{ c.id }}" {% if c.id == kyc.country %}selected="selected"{% endif %}>{{ c.en_name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Subject" required="required">
+                        <select name="id_type" class="form-control">
+                        <option value="">请选择证件类型</option>
+                            <option value="1">护照</option>
+                            <option value="2">身份证件</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="idNumber" style="display: none">
+                        <input type="text" name="number" class="form-control">
+                    </div>
+                    <div class="form-group" id="photo1" style="display: none">
+                        <label for="jobData" class="control-label">证件照片</label><br>
+                        <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                            <button class="btn btn-success fileinput-button" type="button">选择图片</button>
+                            <input type="file" name="photo1" id="jobData" onchange="loadFile1(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+                        </div>
+                        <span id="filename1" style="vertical-align: middle">No file chosen</span>
+                    </div>
+                    <div class="form-group" id="photo2" style="display: none">
+                        <label for="jobData" class="control-label">证件背面照片</label><br>
+                        <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                            <button class="btn btn-success fileinput-button" type="button">选择图片</button>
+                            <input type="file" name="photo2" id="jobData" onchange="loadFile2(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+                        </div>
+                        <span id="filename2" style="vertical-align: middle">No file chosen</span>
+                    </div>
+                    <div class="form-group" id="photo3" style="display: none">
+                        <label for="jobData" class="control-label">上传手持照片</label><br>
+                        <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                            <button class="btn btn-success fileinput-button" type="button">选择图片</button>
+                            <input type="file" name="photo3" id="jobData" onchange="loadFile3(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+                        </div>
+                        <span id="filename3" style="vertical-align: middle">没选择文件</span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-block" id="idVerification">提交</button>
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <textarea name="" class="form-control btn-block" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <input type="submit" class="btn btn-block" value="send message">
-                    </div>
-                  </div>
-				  <div class="col-sm-12">
-					<p class="contact-success">Your Message has been Successfully Sent!</p>
-					<p class="contact-error">Error! Something went wrong!</p>
-				  </div>
+
                 </form>
               </div>
             </div>
@@ -54,4 +83,76 @@
         </div>
     </section>
 
+{% endblock %}
+
+{% block footer %}
+{% include 'common/footer.html' %}
+    <script>
+    $("select[name='id_type']").change(function(){
+        var type = $(this).children('option:selected').val();
+        if(type == 1){
+            $("#photo1").css('display','block');
+            $("#photo2").css('display','none');
+            $("#photo3").css('display','block');
+            $("#idNumber").css('display','block');
+            $("input[name='number']").attr('placeholder','Passport Number')
+        }
+        else if(type ==2){
+            $("#photo1").css('display','block');
+            $("#photo2").css('display','block');
+            $("#photo3").css('display','block');
+            $("#idNumber").css('display','block');
+            $("input[name='number']").attr('placeholder','Government ID')
+        }
+    });
+
+    function loadFile1(file){
+        $("#filename1").html(file.name);
+    }
+    function loadFile2(file){
+        $("#filename2").html(file.name);
+    }
+    function loadFile3(file){
+        $("#filename3").html(file.name);
+    }
+
+    $("#idVerification").click(function () {
+       var firstName = $("input[name='firstName']").val();
+       if (firstName == ""){
+           alert("The First name can not be empty");
+           return false;
+       }
+       var lastName = $("input[name='lastName']").val();
+       if (lastName == ""){
+           alert("The Last name can not be empty");
+           return false;
+       }
+       var country = $("select[name='country'] option:selected").val();
+       if (country == ""){
+           alert("Please select nationality");
+           return false;
+       }
+       var type = $("select[name='id_type'] option:selected").val();
+       if (type == ""){
+           alert("Please select ID type");
+           return false;
+       }
+       var number = $("input[name='number']").val();
+       if (number == ""){
+           alert("The ID number can not be empty");
+           return false;
+       }
+       var photo1 = $("input[name='photo1']").val();
+       var photo2 = $("input[name='photo2']").val();
+       var photo3 = $("input[name='photo3']").val();
+       if(type == 1 && (photo1 == "" || photo3 == "")){
+           alert("Please choose files");
+           return false;
+       }else if(type == 2 && (photo1 == "" || photo2 == "" || photo3 == "")){
+           alert("Please choose files");
+           return false;
+       }
+    });
+
+    </script>
 {% endblock %}

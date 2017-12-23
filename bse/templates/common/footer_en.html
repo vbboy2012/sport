@@ -1,0 +1,174 @@
+{% load staticfiles %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+     <!-- <script src="https://code.jquery.com/jquery.js"></script> -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/smoothscroll.js' %}"></script>
+	<script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
+	<script src="{% static 'js/jquery.localScroll.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nav.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static 'js/jquery.parallax.js' %}"></script>
+    <script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
+    <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'js/matchMedia.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <script src="{% static 'js/wow.js' %}"></script>
+    <script src="{% static 'js/easing.js' %}"></script>
+
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/stats.js' %}"></script>
+
+    <script>
+    	$(document).ready(function() {
+		// "use strict";
+        $('#banner').parallax("50%", 0.5, true);
+    		$('#feature').parallax("50%", 0.5, true);
+    		$('#video').parallax("50%", 0.5, true);
+    		$('#subscription').parallax("50%", 0.5, true);
+    		$('#review').parallax("50%", 0.5, true);
+    		$('#download').parallax("50%", 0.5, true);
+            $('#footer').parallax("50%", 0.5, true);
+    	});
+
+
+        $(function () {
+            $("a[name='login']").click(function () {
+                window.location.href = '/login';
+            });
+        })
+        $(function () {
+            $("a[name='user']").click(function () {
+                window.location.href = '/user';
+            });
+        })
+        $(function () {
+            $("a[name='logout']").click(function () {
+                window.location.href = '/logout';
+            });
+        })
+        $(function () {
+            $("#back").click(function () {
+                window.location.href = '/';
+            });
+        })
+
+        $(function () {
+            $("#token").click(function () {
+                window.location.href = '/token';
+            });
+        })
+
+        $("#add-address").click(function () {
+            var address = $("input[name='address']").val();
+            if (address == ""){
+                alert("The ETH address can not be empty");
+                return false;
+            }
+            var data = $("#address-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addAddress' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = '/verifyInfo';
+                    }
+                    else if(result.status == 2){
+                        alert("This ETH address already exists")
+                    }
+                },
+            });
+        });
+
+        $("#en-us").click(function () {
+            $("input[name='lang']").val("en");
+            var data = $("#lang-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ChangeLanguage' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = result.url;
+                    }
+                },
+            });
+        });
+
+        $("#zh-cn").click(function () {
+            $("input[name='lang']").val("ch");
+            var data = $("#lang-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ChangeLanguage' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = result.url;
+                    }
+                },
+            });
+        });
+
+        $("#send-message").click(function () {
+            var firstName = $("input[name='firstName']").val();
+            var lastName = $("input[name='lastName']").val();
+            var email = $("input[name='email']").val();
+            var subject = $("input[name='subject']").val();
+            var message = $("input[name='message']").val();
+            if (firstName == "" || lastName == "" || email == "" || subject =="" || message ==""){
+                alert("Please fill in the complete form");
+                return false;
+            }
+            var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            if (!reg.test(email)){
+                alert("Please enter the correct email address");
+                return false;
+            }
+            var data = $("#message-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'contact' %}",
+                data: data,
+                success: function (result) {
+                    if (result == 1){
+                        alert("Your Message has been Successfully Sent!")
+                    }else if(result == 2){
+                        alert("Your message is being dealt with!")
+                    }
+                },
+            });
+        });
+
+        $("#sign-reserve").click(function () {
+            var email = $("#signemail").val();
+            if (email == ""){
+                alert("The email address can not be empty");
+                return false;
+            }
+            var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            if (!reg.test(email)){
+                alert("Please enter the correct email address");
+                return false;
+            }
+            var data = $("#sign-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'reserve' %}",
+                data: data,
+                success: function (result) {
+                    if (result == 1){
+                        alert("Submit success!")
+                    }else if(result == 2){
+                        alert("Unable to repeat submit!")
+                    }
+                },
+            });
+        });
+
+    </script>

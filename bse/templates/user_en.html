@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2_en.html' %}
+{% endblock %}
+
+{% block content %}
+    <section class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>Account Information</h2>
+                </div>
+              </div>
+              <div class="col-md-offset-3 col-sm-6">
+                <table class="table">
+                      <tbody>
+                        <tr>
+                        <tr>
+                          <td>My Token</td>
+                          <td><label>{{ request.user.dcb_count }} DCB <a href="/token">Token record</a></label></td>
+                        </tr>
+                          <td>ID verification</td>
+                          <td><label>{% if request.user.is_kyc %}
+                               Verification success!
+                             {% elif kyc == None %}
+                               <a href="/verifyInfo">Info submission needed</a>
+                              {% else %}
+                              Wait for validation!
+                          {% endif %}</label></td>
+                        </tr>
+                        <tr>
+                          <td>ETH address</td>
+                          <td><label>{% if not request.user.eth_address %}
+                              null
+                              {% else %}
+                              {{ request.user.eth_address }}
+                          {% endif %}</label></td>
+                        </tr>
+                        <tr>
+                          <td>Email address</td>
+                          <td><label>{{ request.user.username }} {% if not request.user.checkEmail %}
+                          <a href="/send?email={{ request.user.username }}">Need to verify email</a>
+                          {% endif %}</label></td>
+                        </tr>
+                        <tr>
+                          <td>Invitation Link</td>
+                          <td><label><a href="http://127.0.0.1:8000/register/?code={{ request.user.icode }}">http://127.0.0.1:8000/register/?code={{ request.user.icode }}</a></label></td>
+                        </tr>
+                        <tr>
+                          <td>Invitation Code</td>
+                          <td><label>{{ request.user.icode }}</label></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                <p>You can get 5%(total capital) awards to resend this code to your friends</p>
+                <hr>
+                <table class="table table-striped">
+                    <caption><h3>My recommended user</h3></caption>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>User</th>
+                      <th>Bonus(DCB)</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ user.email }}</td>
+                          <td>{{ user.dcb_bonus }}</td>
+                          <td>{% if user.status %}
+                            Successful
+                            {% else %}
+                            Wait for send
+                        {% endif %}</td>
+                        </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              <br>
+               <a class="btn btn-block" href="/logout">logout</a>
+              <br>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock %}

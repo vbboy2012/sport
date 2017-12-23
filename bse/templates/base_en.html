@@ -1,0 +1,599 @@
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+	<title>DAOClub</title>
+    <meta name="description" content="GRAPE App landing Page by Codepassenger">
+    <meta name="author" content="Codepassenger">
+
+	<!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% include 'common/link.html' %}
+  </head>
+  <body>
+
+	<!-- Preloader -->
+      <div id="faceoff">
+        <div id="preloader"></div>
+        <div class="preloader-section"></div>
+      </div>
+    <!-- Preloader end -->
+
+    <!-- header start -->
+    {% block header %}
+    {% include 'common/header_en.html' %}
+    {% endblock %}
+    <!-- header end -->
+
+    {% block content %}
+    <!-- banner start -->
+    <section id="banner" class="banner">
+      <div id="particles-js">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2><a href="" class="lg-logo default-color"></a></h2> <!--/ .lg-logo -->
+                <div class="flex_text text-slider">
+                  <ul class="slides">
+                      <li>Democratized autonomous organization based on sports events</li>
+                      <li>DAOClub brings together sports enthusiasts all over the world</li>
+                      <li>Welcome to DAOClub.</li>
+                  </ul>
+                </div>
+                <!--/.text-slider end-->
+
+                <div class="download-block text-center">
+                   <a href="/register" class="btn-download">Join us</a><a href="" class="btn-download">Telegram</a>
+                 </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.trans-bg -->
+    </section>
+    <!-- banner end -->
+
+    <!-- intro start -->
+    <section id="intro" class="intro white">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <span class="sub-head wow fadeInLeft">about</span>
+            <div class="title wow fadeInRight">
+              <h2>DAOClub</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".1s">
+              <i class="fa fa-recycle"></i>
+              <h3>Ecosystem</h3>
+              <p>Decentralized event forecasting network, DCTC (DAOClub Equity Trading Center), team value-added fund and DAOClub community</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".2s">
+              <i class="fa fa-life-ring"></i>
+              <h3>Democratized community</h3>
+              <p>DAO realized based on the Ethernet intelligent contracting can be stored in the Ethernet block chain for community votes, proposals, trading and election.</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".3s">
+              <i class="fa fa-group"></i>
+              <h3>Community fund</h3>
+              <p>Let more sports enthusiasts join in it to create a sustainable ecological environment for the community</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".4s">
+              <i class="fa fa-cloud"></i>
+              <h3>Forecasting network</h3>
+              <p>Decentralized forecasting network and source-open intelligent contracting code. The process is open and transparent, which can completely eliminate the risks of centralized fraud.</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".5s">
+              <i class="fa fa-soccer-ball-o"></i>
+              <h3>Team value-added fund</h3>
+              <p>Provide a sufficient pool of funds for the event forecasting network with investors profiting quarterly from the fund.</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="app-block wow bounceInUp" data-wow-delay=".6s">
+              <i class="fa fa-line-chart"></i>
+              <h3>Equity trading center</h3>
+              <p>The decentralized equity trading function realized based on the Ethernet has such inherent characteristics as block chain tamper-proofing, trust-elimination and censorship application.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- intro end -->
+
+    <!-- feature start -->
+    <section id="feature" class="feature">
+      <div class="trans-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <h2 class="wow swing" data-wow-delay=".1s">Credit mechanisms</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <ul class="feature-list-left">
+                <li>
+                  <div class="feature-detail wow fadeInLeft" data-wow-delay=".4s">
+                    <h4>Degree of Trust</h4>
+                    <p>Degree of Trust is the ratio between sum of all locking tokens periods and all existing tokens.</p>
+                  </div>
+                  <div class="feature-icon wow fadeInLeft" data-wow-delay=".3s">
+                    <i class="fa fa-star-half-full"></i>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-detail wow fadeInLeft" data-wow-delay=".4s">
+                    <h4>Voting</h4>
+                    <p>Technically, a voting mechanism is written in a Smart Contract, that contains transparent rules and conditions to execute an action or to grant some permission or privilege.</p>
+                  </div>
+                  <div class="feature-icon wow fadeInLeft" data-wow-delay=".3s">
+                    <i class="fa fa-thumbs-up"></i>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-detail wow fadeInLeft" data-wow-delay=".4s">
+                    <h4>Voting quorum and timeframe</h4>
+                    <p>n order for voting to be valid, a minimum quorum of addresses, that cumulatively own at least 20% of all tokens in existence, must submit their vote.All votings must last for at least a 14 days period.</p>
+                  </div>
+                  <div class="feature-icon wow fadeInLeft" data-wow-delay=".3s">
+                    <i class="fa fa-users"></i>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-detail wow fadeInLeft" data-wow-delay=".4s">
+                    <h4>Right to vote, Right to be elected</h4>
+                    <p>Each address have the right to vote proportionally to the amount of donated or locked coins (PoT) from that address.Each address have the right to be elected, respectively to gain Trust Level and underlying rights.</p>
+                  </div>
+                  <div class="feature-icon wow fadeInLeft" data-wow-delay=".3s">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-4 text-center">
+              <img class="wow bounceInUp" src="{% static 'images/list2.png' %}" alt="" title="">
+            </div>
+            <div class="col-sm-4">
+              <ul class="feature-list-right">
+                <li>
+                  <div class="feature-icon wow fadeInRight" data-wow-delay=".3s">
+                    <i class="fa fa-rocket"></i>
+                  </div>
+                  <div class="feature-detail wow fadeInRight" data-wow-delay=".4s">
+                    <h4>Elections</h4>
+                    <p>Elections will be triggered each half-year.An election list of all candidates will be collected and locked one month (31 days) before the election day.</p>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-icon wow fadeInRight" data-wow-delay=".3s">
+                    <i class="fa fa-star"></i>
+                  </div>
+                  <div class="feature-detail wow fadeInRight" data-wow-delay=".4s">
+                    <h4>Trust Levels</h4>
+                    <p>DAO has 3 Trust Levels：Executive Board(EB)、Elected Commons(EC)、Voters。</p>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-icon wow fadeInRight" data-wow-delay=".3s">
+                    <i class="fa fa-user"></i>
+                  </div>
+                  <div class="feature-detail wow fadeInRight" data-wow-delay=".4s">
+                    <h4>Identity disclosure</h4>
+                    <p>Executive Board (EB) candidates must disclose their Identity to ensure that all 5 addresses belong to different persons.</p>
+                  </div>
+                </li>
+                <li>
+                  <div class="feature-icon wow fadeInRight" data-wow-delay=".3s">
+                    <i class="fa fa-institution"></i>
+                  </div>
+                  <div class="feature-detail wow fadeInRight" data-wow-delay=".4s">
+                    <h4>Management of Funds</h4>
+                    <p>The tokens of the community fund and the technical fund are permanently locked.Only from the DAOClub intelligent contract can be used for the purpose of the fund.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.trans-bg -->
+    </section>
+    <!-- feature end -->
+
+    <!-- description start -->
+    <section id="description" class="description white">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <div class="title wow fadeInRight">
+              <h2>OUR VISION</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 wow pulse" data-wow-delay=".5s">
+            <img class="img-responsive" src="{% static 'images/system2.png' %}" alt="Why to choose us">
+          </div>
+          <div class="col-sm-6">
+            <p>Today, sports events have bene far beyond its inherent scope. Currently, commercial development depending on sports events is growing vigorously. Economic benefits from sports rebroadcast and court advertisements have been very huge. As can be said, sports events have become a key carrier of commercial operation and economic benefit creation in the market economic system.</p>
+            <p>A democratic and autonomous organization and economic ecological circle will be established specific to sports events by DAOClub, and sports events will be shifted to the economic model of digital asset,Serve the world's sports enthusiasts.</p>
+            <p>In addition to the centralization prediction network, DAOClub DAO also includes the issuance of value added funds and value shares. All these are driven by democracy, not decided by one person or one team, but by the whole DAOClub community. DAOClub will be a democratic and win-win community.</p>
+              <!-- /.description-list -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- description end-->
+
+    <!-- video start -->
+    <section id="video">
+      <div id="trans-bg" class="trans-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="video-mask">
+                <h2 class="wow bounceInDown text-center">PLAN</h2>
+                  <div class="demo">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-timeline">
+                                    <div class="timeline" data-heading="2016">
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                November 2016,<br>Establish the core team and officially launch the project<br>&nbsp;
+                                            </p>
+                                        </div>
+                                        <span class="year">
+                                            <span>2016</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="timeline" data-heading="2017">
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                April 2017,Complete the project team construction and discuss the framework of the community operation
+                                            </p>
+                                        </div>
+                                        <span class="year">
+                                            <span>2017</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="timeline" data-heading="2017">
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                August 2017,Officially release the White Paper and establish the DAO Foundation
+                                            </p>
+                                        </div>
+                                        <span class="year">
+                                            <span>2017</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="timeline" data-heading="2017">
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                December 2017,Enter the phase of community promotion and launch the private placement
+                                            </p>
+
+                                        </div>
+                                        <span class="year">
+                                            <span>2017</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="timeline bottom" data-heading="2018">
+                                        <span class="year">
+                                            <span>2018</span>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                January 2018,Start the development phase of technology after the success of private placement
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="timeline bottom" data-heading="2018">
+                                        <span class="year">
+                                            <span>2018</span>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                May 2018,Open the DAO source code and launch the website of the community and the APP online
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="timeline bottom" data-heading="2018">
+                                        <span class="year">
+                                            <span>2018</span>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <p class="description">
+                                                Launch the first community election after the official on-line and running of the project
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /.trans-bg -->
+      </div>
+    </section>
+    <!-- video end -->
+
+    <!-- review start -->
+    <section id="review" class="review">
+      <div class="">
+        <div class="container">
+          <div class="row">
+          <div class="col-sm-12 text-center">
+            <div class="title wow fadeInRight">
+              <h2>OUR Team</h2>
+            </div>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <ul class="description-list">
+                  <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team1.jpg' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">Bodrum Salvador</span>
+                          <span class="review-comp">Co-founder,CEO</span>
+                          <p>Bodrum has been the leader in sales and marketing for more than 18 years in the data center and cloud services industry. Exodus Communications, a pioneer in the data center industry, has led the company's revenue growth from $50 million to $800 million in 4 years. Bodrum received a MBA degree from University of California at Berkeley and Columbia University respectively.</p>
+                      </div>
+                  </li>
+                  <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team2.png' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">John A.</span>
+                          <span class="review-comp">Co-founder</span>
+                          <p>Smart contract architect, blockchain evangelist. 6 years in IT industry.Chief business development Mind-devHolds Masters degree in Computer science from Belarus State University</p>
+                      </div>
+                  </li>
+                  <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team3.png' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">Gilbert K.</span>
+                          <span class="review-comp">Marketing Director</span>
+                          <p>Marketed semiconductor technologies for NXP, ARM and RS Components in Asia-Pacific and global, Business Consultant for Johnson & Johnson. Graduate of the Manchester Business School (MBA).</p>
+                      </div>
+                  </li>
+                  <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team4.png' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">The L.</span>
+                          <span class="review-comp">Blockchain Architect</span>
+                          <p>Polyglot programmer, developed solutions for Alibaba, chinesepod.com, italki.com, and openlanguage.com. Blockchain pioneer, founder of open source blockchain-powered project gogo.tattoo connecting the tattoo community. Holds Masters in Computer Science from Harbin Engineering University and Saint Petersburg State Marine Technical University. Fluent in Chinese and Esperanto.</p>
+                      </div>
+                  </li>
+                  <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team5.png' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">Juliette</span>
+                          <span class="review-comp">Community Manager</span>
+                          <p>worked as a social media management in Facebook, with experience in SEO copywriting and social media management. A record company and the founder of an e - commerce store.</p>
+                      </div>
+                  </li>
+                    <li class="">
+                      <div class="col-sm-4 text-center">
+                          <img class="img-circle" src="{% static 'images/team6.jpg' %}" style="width: 151px" alt="image">
+                      </div>
+                      <div class="col-sm-8">
+                          <span class="reviewer-name">Daugherty</span>
+                          <span class="review-comp">Project Manager</span>
+                          <p>Former Marketing Executive at two technology startups, Portus and Aerifai. Completed an overseas program in Entrepreneurial Innovation at Nanyang Technological University in Singapore.</p>
+                      </div>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.trans-bg -->
+    </section>
+    <!-- review end -->
+
+
+    <!-- download start -->
+    <section id="download" class="downlaod">
+      <div class="trans-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <h2 class="wow swing">WHITE PAPER</h2>
+              <p>Want to learn more about the foundations and mechanisms behind the scenes? Recommended Reading for the Curious Members of our Community and Newcomers, a must-read for Developers, Crypto Enthusiasts and Investors. This is enhanced version of Credit mechanisms and Token description.s</p>
+              <span class="wow fadeInLeft" style="display:inline-block"><a href="" class="btn">English </a></span>
+              <span class="wow fadeInLeft" style="display:inline-block"><a href="" class="btn">Chinese</a></span>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.trans-bg -->
+    </section>
+    <!-- download end -->
+
+    <!-- support start -->
+    <section id="support" class="support white">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <div class="title wow fadeInRight">
+              <h2>Business Angel</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 wow bounceInUp" data-wow-duration="1s">
+            <div class="support-block">
+              <span class="support-icon"><i class="fa fa-futbol-o"></i></span>
+              <h3>Singapore Pools</h3>
+              <p>The Singapore Gambling company is a legitimate government of Singapore Gambling company established in 1968, is the world Gaming Association and a member of the Asia Pacific gaming association. The main products include: a lot of words, betting tickets, lottery, fun and sports betting.</p>
+            </div>
+          </div>
+          <div class="col-sm-4 wow bounceInUp" data-wow-duration="2s">
+            <div class="support-block active">
+              <span class="support-icon"><i class="fa fa-btc"></i></span>
+              <h3>YOYOCoins</h3>
+              <p>YOYOCoins let the people from different countries can use the currency to buy bitcoin. Bitcoin website sellers released for sale ads, and payment and exchange rate. Provide information, bitcoin forum community, let users better understand the digital currency</p>
+            </div>
+          </div>
+          <div class="col-sm-4 wow bounceInUp" data-wow-duration="3s">
+            <div class="support-block">
+              <span class="support-icon"><i class="fa fa-link"></i></span>
+              <h3>LinkVc</h3>
+              <p>LinkVc is an emerging venture capital firm based in Singapore,currently focused on working with block chains, digital money and Internet financial services investments and projects.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- support end -->
+
+    <!-- subscription start -->
+    <section id="subscription" class="subscription">
+      <div class="trans-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 text-center">
+            <h2 class="wow swing">Private Placement sign up</h2>
+            <form class="newsletter-signup" id="sign-form" method="post">
+                {% csrf_token %}
+              <div class="input-group">
+                <input type="email" id="signemail" name="email" placeholder="Enter Your Email Address" class="form-control wow fadeInLeft">
+                <span class="input-group-btn wow fadeInRight">
+                <button type="button" class="btn btn-sub" id="sign-reserve">submit</button>
+                </span>
+              </div><!-- /.input-group -->
+            </form>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.trans-bg -->
+    </section>
+    <!-- subscription end -->
+
+    <!-- contact start -->
+    <section id="contact" class="contact white tab-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs text-center" role="tablist">
+              <li class="active wow rollIn animated" data-wow-duration="2s"><a href="#contact-form" role="tab" data-toggle="tab"><i class="fa fa-envelope"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+       <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">we are here</span>
+                <div class="title">
+                  <h2>get in touch</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <form class="form-horizontal" id="message-form" method="post">
+                    {% csrf_token %}
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <div class="span-form">
+                        <input class="form-control" type="text" placeholder="First name" name="firstName">
+                      </div>
+                      <div class="span-form">
+                        <input type="text" class="form-control" placeholder="Last name" name="lastName">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <input type="email" class="form-control" placeholder="Email address" name="email">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Subject" name="subject">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <textarea name="message" class="form-control btn-block" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-block" id="send-message">send message</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- contact end -->
+
+    <!-- footer start -->
+    <footer id="footer">
+      <div class="trans-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <div class="social-icon">
+               <a href="" class="wow rollIn animated" data-wow-delay=".1s"><i class="fa fa-facebook"></i></a>
+               <a href="" class="wow rollIn animated" data-wow-delay=".2s"><i class="fa fa-twitter"></i></a>
+               <a href="" class="wow rollIn animated" data-wow-delay=".3s"><i class="fa fa-paper-plane"></i></a>
+              </div>
+              <div class="copyright">
+                <p>&copy; <span>DAOClub</span>2017, all right reserved. </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="go-to-top">
+            <a href="#banner"></a>
+        </div>
+        <!--/.go-to-top end-->
+      </div> <!-- /.trans-bg -->
+    </footer>
+    <!-- footer end -->
+    {% endblock %}
+
+    {% block footer %}
+    {% include 'common/footer_en.html' %}
+    {% endblock %}
+  </body>
+</html>

@@ -16,21 +16,25 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from bse import views as bse_views
+from django.conf import  settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', bse_views.index, name='index'),
-    url(r'^test/', bse_views.test, name='test'),
     url(r'^user/', bse_views.user, name='user'),
     url(r'^addAddress/', bse_views.addAddress, name='addAddress'),
     url(r'^verifyInfo/', bse_views.verifyInfo, name='verifyInfo'),
     url(r'^register/', bse_views.register, name='register'),
-    url(r'^checkmail/', bse_views.checkmail, name='checkmail'),
     url(r'^contact/', bse_views.contact, name='contact'),
-    url(r'^sendcode/', bse_views.sendcode, name='sendcode'),
+    url(r'^reserve/', bse_views.reserve, name='reserve'),
+    url(r'^token/', bse_views.token, name='token'),
     url(r'^send/', bse_views.send, name='send'),
+    url(r'^queryico/', bse_views.queryico, name='queryico'),
     url(r'^activate/(?P<token>\w+.[-_\w]*\w+.[-_\w]*\w+)/$', bse_views.activate, name='activate'),
     url(r'^login/', bse_views.login, name='login'),
     url(r'^logout/', bse_views.logout, name='logout'),
+    url(r'^ChangeLanguage/', bse_views.ChangeLanguage, name='ChangeLanguage'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^bozaiadmin/', admin.site.urls),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

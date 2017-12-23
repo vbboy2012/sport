@@ -12,11 +12,12 @@
               <div class="col-sm-12 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                  <h3>SEC TOKEN</h3>
+                  <h2>DCB TOKEN</h2>
                 </div>
-                  <label>Accepted Currency: Ethereum</label><br>
-                  <label>Token Contribution Price will be: 1 ETH = 20,000 SEC</label><br>
-                  <label>SEC Token Contribution Event will only be conducted in ETH</label>
+                  <label>可接受的货币: Ethereum</label><br>
+                  <label>令牌私募参阶段考价格: 1 ETH = {{ config.private_price }} DCB</label><br>
+                  <label>令牌公开售卖参考价格: 1 ETH = {{ config.public_price }} DCB</label><br>
+                  <label>您将在您提供给我们的ETH地址收到您购买的DCB令牌</label>
               </div>
             </div>
             <div class="row">
@@ -25,8 +26,10 @@
                     {% csrf_token %}
                   <div class="col-md-offset-3 col-sm-6">
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="ETH address" name="address">
+                      <input type="text" class="form-control" placeholder="ETH address" name="address" value="{{ request.user.eth_address }}">
                     </div>
+                      <p>注意：请不要使用交易所提供的地址作为KYC认证的地址，否则您的代币会打到交易所的账号。</p>
+                      <p>您可以选择 <a href="https://www.myetherwallet.com">myetherwallet</a>或者<a href="https://token.im">imtoken</a>钱包作为您的KYC认证地址</p>
                       <div class="form-group">
                       <button type="button" class="btn btn-block" id="add-address">Submit</button>
                     </div>

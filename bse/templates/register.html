@@ -12,7 +12,7 @@
               <div class="col-sm-12 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                  <h2>Sign Up</h2>
+                  <h2>注册</h2>
                 </div>
               </div>
             </div>
@@ -22,23 +22,23 @@
                     {% csrf_token %}
                   <div class="col-md-offset-3 col-sm-6">
                     <div class="form-group">
-                      <input type="email" class="form-control" placeholder="Email address" name="username">
+                      <input type="email" class="form-control" placeholder="邮箱地址" name="username">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" placeholder="Password" name="password1">
+                      <input type="password" class="form-control" placeholder="密码" name="password1">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" placeholder="Confirm Password" name="password2">
+                      <input type="password" class="form-control" placeholder="确认密码" name="password2">
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Invitation code (optional)" name="code" value="{{ request.GET.code }}">
+                      <input type="text" class="form-control" placeholder="邀请码 (选填)" name="code" value="{{ request.GET.code }}">
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-block" id="create" data-toggle="modal" data-target="#myModal">Create Account</button>
+                        <button type="button" class="btn btn-block" id="create" data-toggle="modal" data-target="#myModal">创建账户</button>
                     </div>
                   </div>
 				  <div class="col-md-offset-3 col-sm-6">
-                    <p class="">If you have an account, <a href="/login">Login Now</a></p>
+                    <p class="">有账户了, <a href="/login">现在登录</a></p>
 				  </div>
                 </form>
               </div>
@@ -56,29 +56,79 @@
       </div>
       <div class="modal-body pre-scrollable">
         Compliance with applicable laws and regulations.
-You are not eligible to and you shall not purchase TNB through its token sale if you are a citizen or resident (tax or otherwise) of any country or state where the purchase of TNB or similar Crypto Token may be prohibited or the token sale is deemed to be not compliant with the applicable laws and regulations.
-*Residents of People’s Republic of China and USA cannot purchase TNB.
+You are not eligible to and you shall not purchase DCB through its token sale if you are a citizen or resident (tax or otherwise) of any country or state where the purchase of DCB or similar Crypto Token may be prohibited or the token sale is deemed to be not compliant with the applicable laws and regulations.
+*Residents of People’s Republic of China and USA cannot purchase DCB.
 Compliance with Anti Money Laundering (AML) and Counter Finance Terrorism (CFT)
 I have read the latest version of the Whitepaper, Acceptable Use Policy, Terms and Conditions for Participants, Privacy Policy and I understand the contents stated in these documents.
-I agree that I will not, under any circumstances, participate in any form of money laundering or financing terrorism activities by using TNB Token. am not a politically exposed person (PEP).
+I agree that I will not, under any circumstances, participate in any form of money laundering or financing terrorism activities by using DCB Token. am not a politically exposed person (PEP).
 I have not been subjected to any regulatory sanctions.
 The state or country where I am based in complies with regulations of Anti Money Laundering (AML).
 Risk Acknowledgement
 I am contributing entirely at my own risk.
-I agree I would not participate in any money laundering and financing terrorism activities by using TNB Token
-Due to the inherent high-risk nature of cryptocurrency markets and ICOs, acquiring the TNB Token does not provide safety of principle, no income, no interest and no guaranteed growth.
+I agree I would not participate in any money laundering and financing terrorism activities by using DCB Token
+Due to the inherent high-risk nature of cryptocurrency markets and ICOs, acquiring the DCB Token does not provide safety of principle, no income, no interest and no guaranteed growth.
 I have read and agree with the whitepaper, the Acceptable Use Policy, the Privacy Policy documents.
 I have read, understood and agree with the statement above and do agree to comply with any laws or regulations enforcing Anti-Money Laundering (AML) and Counter Financing Terrorism (CFT).
 I have read, understood and agree with the statement above regarding Acknowledgement of Risk
-I am fully aware and agree that I must be identified through a KYC (Know Your Customer) process in order to withdraw my TNB Tokens
+I am fully aware and agree that I must be identified through a KYC (Know Your Customer) process in order to withdraw my DCB Tokens
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-block" id="signup">I agree and Sign Up</button>
+        <button type="button" class="btn btn-block" id="signup">我同意并注册</button>
       </div>
     </div>
   </div>
 </div>
     </section>
 
+{% endblock %}
+
+{% block footer %}
+{% include 'common/footer.html' %}
+    <script>
+    $("#create").click(function () {
+           var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+            var email = $("input[name='username']").val();
+            if (email == ""){
+                alert("邮箱地址不能为空");
+                return false;
+            }
+            if (!reg.test(email)){
+                alert("请输入正确的邮箱地址");
+                return false;
+            }
+            var pass1 = $("input[name='password1']").val();
+            if (pass1 == ""){
+                alert("密码不能为空");
+                return false;
+            }
+            var pass2 = $("input[name='password2']").val();
+            if (pass2 == ""){
+                alert("请再次输入密码");
+                return false;
+            }
+            if(pass1 != pass2){
+                alert("两次输入的密码不一致");
+                return false;
+            }
+        });
+
+        $("#signup").click(function () {
+            var data = $("#signup-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'register' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        alert("此电子邮件已存在帐户!")
+                    }
+                    else if(result.status == 2){
+                        //verification email.
+                        location.href = '/send?email='+result.email;
+                    }
+                },
+            });
+        })
+    </script>
 {% endblock %}

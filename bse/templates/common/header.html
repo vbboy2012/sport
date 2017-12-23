@@ -3,7 +3,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 <header id="home" class="navbar-fixed-top">
       <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
+        <div class="container-index-image.html">
           <div class="row">
             <div class="col-sm-2">
               <!-- Brand and toggle get grouped for better mobile display -->
@@ -21,29 +21,40 @@
               <!-- Collect the nav toggling -->
               <div class="collapse navbar-collapse navbar-example" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                  <li><a href="#intro">Intro</a></li>
-                  <li><a href="#feature">Feature</a></li>
-                  <li><a href="#description">Description</a></li>
-                  <li><a href="#screenshot">Screenshots</a></li>
-                  <li><a href="#download">Download</a></li>
-                  <li><a href="#contact">Contact</a></li>
+                  <li><a href="#intro">关于DAOClub</a></li>
+                  <li><a href="#feature">特征</a></li>
+                  <li><a href="#description">愿景</a></li>
+                  <li><a href="#review">团队</a></li>
+                  <li><a href="#download">白皮书</a></li>
+                  <li><a href="#contact">联系我们</a></li>
+                  <li><a href="javascript:void(0)" id="token">令牌销售</a></li>
                 </ul>
               </div><!-- /.navbar-collapse -->
             </div>
-            <div class="col-sm-3">
-              <ul class="nav navbar-nav pull-right">
-                  {% if request.user.is_authenticated %}
-                      <li><a href="javascript:void(0)" name="user">{% if request.user.username|length >= 18 %}
-                      {{ request.user.username|slice:"18" }}...
-                          {% else %} {{ request.user.username }}
-                      {% endif %}</a></li>
-                      <li><a href="javascript:void(0)" name="logout">Logout</a></li>
+            <div class="col-sm-3 mob-right">
+              <ul class="app pull-right">
+                {% if request.user.is_authenticated %}
+                      <li><a href="javascript:void(0)" name="user">用户中心</a></li>
+                      {% if request.session.user_config.language == "English" %}
+                        <li><a href="javascript:void(0)" id="zh-cn">中文</a></li>
+                        {% else %}
+                        <li><a href="javascript:void(0)" id="en-us">English</a></li>
+                        {% endif %}
                   {% else %}
-                  <li><a href="javascript:void(0)" name="login">Login</a></li>
+                  <li><a href="javascript:void(0)" name="login">登录</a></li>
+                    {% if request.session.user_config.language == "English" %}
+                    <li><a href="javascript:void(0)" id="zh-cn">中文</a></li>
+                    {% else %}
+                    <li><a href="javascript:void(0)" id="en-us">English</a></li>
+                    {% endif %}
                   {% endif %}
               </ul>
             </div>
           </div>
         </div><!-- /.container -->
       </nav>
+<form method="post" id="lang-form">
+    {% csrf_token %}
+    <input type="hidden" name="lang" value="">
+</form>
     </header>

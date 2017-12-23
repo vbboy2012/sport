@@ -12,16 +12,16 @@
               <div class="col-md-offset-3 col-sm-6 text-center">
                 <span class="sub-head">welcome</span>
                 <div class="title">
-                  <h2>activate</h2>
+                  <h2>激活</h2>
                 </div>
                   {% if message == 1 %}
-                    <label>Sorry, Verify mail timeout!</label>
+                    <label>对不起, 验证邮件超时!</label>
                   {% elif message == 2 %}
-                    <label>Sorry, Verify Email address not found!</label>
+                    <label>对不起, 验证邮箱没有找到!</label>
                   {% elif message == 3 %}
-                    <label>Thank you! Your email address has been successfully verified.</label>
-                    <p>Tnb.fund is the only official website of TNB, TNB Tokens project. Should you have any questions, please email us at contract.timenb for clarifications or confirmation. Neither tnb.fund nor our customer service would ever ask for details of your private key or verification codes in any case. Please do not give away any of your private info to anyone. Thank you!</p>
-                    <button type="button" class="btn btn-block">Get verified now by submitting your info</button>
+                    <label>谢谢您! 您的电子邮件地址已成功验证。</label>
+                    <p>daoclub.org是DAOClub唯一官方网站，如果您有任何问题，请发邮件到contract@daoclub.org澄清或确认。我们的客服不会详细询问你的私钥或验证码在任何情况下。请不要把你的私人信息泄露给任何人。谢谢您!</p>
+                    <a type="button" href="/verifyInfo" class="btn btn-block">现在通过提交您的信息进行验证</a>
                   {% endif %}
               </div>
             </div>

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2_en.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>TOKEN SALE</h2>
+                </div>
+                  <label>{% if stage == 1 %}
+                        Private placement has started
+                      {% elif stage == 2 %}
+                        Public sales have been started
+                      {% elif stage == 3 %}
+                        The sale of the token has ended
+                  {% endif %}</label><br>
+                  <label>Accepted Currency: Ethereum</label><br>
+                  <label>Token Private Placement Price will be: 1 ETH = {{ privatePrice }} DCB</label><br>
+                  <label>Token Public Sale Price will be: 1 ETH = {{ publicPrice }} DCB</label><br>
+                  {% if stage != 3 %}
+                  <label>start selling time</label><br>
+                  <label>{{ countdown }}-{{ endDate }}</label>
+                  {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-offset-3 col-sm-6">
+			    <div id="countdown">
+					<div class="timeBox">
+						<div class="days">00</div>
+						Days
+					</div>
+					<div class="timeBox">
+						<div class="hours">00</div>
+						Hours
+					</div>
+					<div class="timeBox">
+						<div class="minutes">00</div>
+						Minutes
+					</div>
+					<div class="timeBox">
+						<div class="seconds">00</div>
+						Seconds
+					</div>
+				</div>
+              </div>
+                </div>
+            <div class="row" style="margin-top: 20px;{% if stage == 1 %}
+                display: none;
+                {% else %}
+                display: block;
+            {% endif %}">
+                <div class="col-md-offset-3 col-sm-6">
+                  <p class="text-center">{{ privateCount }} DCB</p>
+                  <div class="progress">
+                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+                        <span class="sr-only">20% Complete</span>
+                      </div>
+                  </div>
+                </div>
+            </div>
+              <div class="row">
+                <div class="col-md-offset-3 col-sm-6">
+                    <table class="table table-striped">
+                    <caption><h3>Token record</h3></caption>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>ETH</th>
+                      <th>DCB</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                        <tr>
+                          <th scope="row">{{ forloop.counter }}</th>
+                          <td>{{ user.eth_num }}</td>
+                          <td>{{ user.dcb_num }}</td>
+                          <td>{% if user.status %}
+                            Successful
+                            {% else %}
+                            Wait for send
+                        {% endif %}</td>
+                        </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                </div>
+              </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block footer %}
+{% include 'common/footer.html' %}
+    <script src="{% static 'js/countdown.jquery.js' %}"></script>
+    <script>
+        $(function() {
+            var isStart = {{ isStart }};
+            if(isStart == 1){
+                 $('#countdown').adddown({date: '{{ countdown|date:"Y/m/d H:i:s" }}',endDate:'{{ endDate|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+            }else if(isStart == 0){
+                    $('#countdown').countdown({date: '{{ countdown|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+
+            } else if(isStart == 2){
+                    $('#countdown').endtime({date: '{{ countdown|date:"Y/m/d H:i:s" }}'}/*** Set website launch date and time ***/, function(){
+                    $('#countdown .days').html("00");
+                    $('#countdown .hours').html("00");
+                    $('#countdown .minutes').html("00");
+                    $('#countdown .seconds').html("00");
+                });
+
+            }
+		});
+    </script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% load staticfiles %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<header id="home" class="navbar-fixed-top">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-full">
+          <div class="row">
+            <div class="col-sm-2">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <h1><a class="nav-brand" href="/"> <img src="{% static 'images/logo.png' %}" alt="gigninga"></a></h1>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <!-- Collect the nav toggling -->
+              <div class="collapse navbar-collapse navbar-example" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <li><a href="javascript:void(0)" id="back">Home</a></li>
+                  <li><a href="javascript:void(0)" id="token">Token Sale</a></li>
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div>
+            <div class="col-sm-3 mob-right">
+              <ul class="app pull-right">
+                  {% if request.user.is_authenticated %}
+                      <li><a href="javascript:void(0)" name="user">User center</a></li>
+                      {% if request.session.user_config.language == "English" %}
+                        <li><a href="javascript:void(0)" id="zh-cn">中文</a></li>
+                        {% else %}
+                        <li><a href="javascript:void(0)" id="en-us">English</a></li>
+                        {% endif %}
+                  {% else %}
+                  <li><a href="javascript:void(0)" name="login">Login</a></li>
+                  {% if request.session.user_config.language == "English" %}
+                    <li><a href="javascript:void(0)" id="zh-cn">中文</a></li>
+                    {% else %}
+                    <li><a href="javascript:void(0)" id="en-us">English</a></li>
+                    {% endif %}
+                  {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.container -->
+      </nav>
+<form method="post" id="lang-form">
+    {% csrf_token %}
+    <input type="hidden" name="lang" value="">
+</form>
+    </header>
