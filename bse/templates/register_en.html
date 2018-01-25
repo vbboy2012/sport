@@ -25,6 +25,10 @@
                       <input type="email" class="form-control" placeholder="Email address" name="username">
                     </div>
                     <div class="form-group">
+                      <input style="width: 200px" type="email" class="" placeholder="Verification Code" name="vercode">
+                      <button style="width: 100px" type="button" class="" id="send-code" style="float: left">Send Code</button>
+                    </div>
+                    <div class="form-group">
                       <input type="password" class="form-control" placeholder="Password" name="password1">
                     </div>
                     <div class="form-group">
@@ -86,9 +90,36 @@ I am fully aware and agree that I must be identified through a KYC (Know Your Cu
 {% block footer %}
 {% include 'common/footer.html' %}
     <script>
+    $("#send-code").click(function () {
+        var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+           var email = $("input[name='username']").val();
+            if (email == ""){
+                alert("The email address can not be empty");
+                return false;
+            }
+            if (!reg.test(email)){
+                alert("Please enter the correct email address");
+                return false;
+            }
+            var data = $("#signup-form").serialize();
+            $(this).attr('disabled',true);
+        $.ajax({
+                type: 'POST',
+                url: "{% url 'sendCode' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        alert("Send success!");
+                    }
+                    else if(result.status == 2){
+                        alert("Account with this email already exist!")
+                    }
+                },
+            });
+    })
     $("#create").click(function () {
            var reg =  /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
-            var email = $("input[name='username']").val();
+           var email = $("input[name='username']").val();
             if (email == ""){
                 alert("The email address can not be empty");
                 return false;
@@ -126,6 +157,18 @@ I am fully aware and agree that I must be identified through a KYC (Know Your Cu
                     else if(result.status == 2){
                         //verification email.
                         location.href = '/send?email='+result.email;
+                    }
+                    else if(result.status == 3){
+                        alert("Recommendation code does not exist!")
+                    }
+                    else if(result.status == 4){
+                        alert("Inviter's account is frozen!")
+                    }
+                    else if(result.status == 5){
+                        alert("IP was blocked!")
+                    }
+                    else if(result.status == 6){
+                        alert("Verification code error!")
                     }
                 },
             });

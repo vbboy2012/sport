@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>添加电报名字</h2>
+                </div>
+                  <label>为确保能识别您邀请的好友</label><br>
+                  <label>请添加您在电报的First Name(名字)，不用添加姓</label><br>
+                  <label>如提示名字已经存在，请在电报更换名字后再试</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <form class="form-horizontal" method="post" id="name-form">
+                    {% csrf_token %}
+                  <div class="col-md-offset-3 col-sm-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="First Name" name="name">
+                    </div>
+                      <div class="form-group">
+                      <button type="button" class="btn btn-block" id="add-name">提交</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

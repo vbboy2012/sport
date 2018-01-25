@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>TOKEN SALE</h2>
+                </div>
+                  <label>认筹合约ETH地址</label><br>
+                  <label style="background: #f0f2f4">0x1bD35E1f87D9F3870Ff8b3afED0eb1b629033588</label><br>
+                  <img src="{% static 'images/address.jpeg' %}" style="width: 200px"><br>
+                  <label>您将在您提供给我们的ETH地址收到您购买的DCB令牌</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="col-md-offset-3 col-sm-6">
+                    <p>为确保安全，建议您先将少量的ETH打到认筹合约ETH地址（如：0.1 ETH）。验证DCB代币可以自动发送到打币地址后，再分批次打剩余ETH。</p>
+                    <p>注意：请不要使用交易所提供的地址作为KYC认证的地址，否则您的代币会打到交易所的账号。</p>
+                    <p>您可以选择 <a href="https://www.myetherwallet.com">myetherwallet</a>或者<a href="https://token.im">imtoken</a>钱包作为您的KYC认证地址</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

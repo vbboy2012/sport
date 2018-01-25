@@ -21,15 +21,15 @@
                         <tr>
                         <tr>
                           <td>My Token</td>
-                          <td><label>{{ request.user.dcb_count }} DCB <a href="/token">Token record</a></label></td>
+                          <td><label>{{ dcbCount }} DCB <a href="/token">Token record</a></label></td>
                         </tr>
                           <td>ID verification</td>
                           <td><label>{% if request.user.is_kyc %}
                                Verification success!
-                             {% elif kyc == None %}
-                               <a href="/verifyInfo">Info submission needed</a>
+                             {% elif request.user.eth_address %}
+                               Wait for validation!
                               {% else %}
-                              Wait for validation!
+                              <a href="/verifyInfo">Info submission needed</a>
                           {% endif %}</label></td>
                         </tr>
                         <tr>
@@ -42,17 +42,23 @@
                         </tr>
                         <tr>
                           <td>Email address</td>
-                          <td><label>{{ request.user.username }} {% if not request.user.checkEmail %}
-                          <a href="/send?email={{ request.user.username }}">Need to verify email</a>
-                          {% endif %}</label></td>
+                          <td><label>{{ request.user.username }}</label></td>
                         </tr>
                         <tr>
                           <td>Invitation Link</td>
-                          <td><label><a href="http://127.0.0.1:8000/register/?code={{ request.user.icode }}">http://127.0.0.1:8000/register/?code={{ request.user.icode }}</a></label></td>
+                          <td><label><a href="http://www.daoclub.org/register/?code={{ request.user.icode }}">http://www.daoclub.org/register/?code={{ request.user.icode }}</a></label></td>
                         </tr>
                         <tr>
                           <td>Invitation Code</td>
                           <td><label>{{ request.user.icode }}</label></td>
+                        </tr>
+                        <tr>
+                          <td>My Friends</td>
+                          <td><label>{% if request.user.telegram_name %}
+                              <a href="/telegram">View</a>
+                              {% else %}
+                              <a href="/addName">Submit FirstName</a>
+                          {% endif %}</label></td>
                         </tr>
                       </tbody>
                     </table>

@@ -12,8 +12,9 @@ class User(AbstractUser):
     checkEmail = models.BooleanField('邮箱验证', default=False)
     pcode = models.CharField(max_length=10,blank=True)
     icode = models.CharField(max_length=10)
-    eth_address = models.CharField(max_length=50)
-    dcb_count = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    eth_address = models.CharField(max_length=50,blank=True)
+    telegram_name = models.CharField(max_length=50,default="",blank=True)
+    ip = models.GenericIPAddressField(null=True)
     is_kyc = models.BooleanField('kyc验证', default=False)
 
 class Kyc(models.Model):
@@ -37,7 +38,7 @@ class Contact(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=20)
-    en_name = models.CharField(max_length=20)
+    en_name = models.CharField(max_length=60)
     code = models.CharField(max_length=5)
     code2 = models.CharField(max_length=5)
     code3 = models.CharField(max_length=5)
@@ -49,16 +50,32 @@ class Reserve(models.Model):
 class Bonus(models.Model):
     user = models.ForeignKey(User)
     email = models.CharField(max_length=50)
-    dcb_bonus = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    dcb_bonus = models.DecimalField(max_digits=20, decimal_places=4, default=0)
     hash = models.CharField(max_length=100, unique=True)
     status = models.BooleanField('是否发送', default=False)
 
 class Token(models.Model):
     user = models.ForeignKey(User)
     eth_num = models.DecimalField(max_digits=20, decimal_places=8, default=0)
-    dcb_num = models.IntegerField(default=0)
+    dcb_num = models.DecimalField(max_digits=20, decimal_places=4, default=0)
     hash = models.CharField(max_length=100,unique=True)
     status = models.BooleanField('是否发送', default=False)
+
+class Telegram(models.Model):
+    first_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    dcb_num = models.DecimalField(max_digits=20, decimal_places=4, default=0)
+    hash = models.CharField(max_length=20,unique=True)
+    updateID = models.CharField(max_length=50,unique=True,default="")
+    status = models.BooleanField('是否发送', default=False)
+
+class Noip(models.Model):
+    ip = models.GenericIPAddressField()
+
+class Verification(models.Model):
+    email = models.CharField(max_length=50)
+    code = models.CharField(max_length=10)
+    status = models.IntegerField(default=0)
 
 class Config(models.Model):
     private_price = models.IntegerField(default=0)

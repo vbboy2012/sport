@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block header %}
-{% include 'common/header2.html' %}
+{% include 'common/header2_en.html' %}
 {% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
                       <input type="text" class="form-control" placeholder="ETH address" name="address" value="{{ request.user.eth_address }}">
                     </div>
                       <p>Be careful: Please do not use the exchange to provide address as KYC certification address, otherwise your token will hit the exchange account and cause unnecessary losses</p>
-                      <p>If you do not have a ETH address.You can choose <a href="https://www.myetherwallet.com">myetherwallet</a>or<a href="https://token.im">imtoken</a></p>
+                      <p>If you do not have a ETH address.You can choose <a href="https://www.myetherwallet.com">myetherwallet</a> or <a href="https://token.im">imtoken</a></p>
                       <div class="form-group">
                       <button type="button" class="btn btn-block" id="add-address">Submit</button>
                     </div>

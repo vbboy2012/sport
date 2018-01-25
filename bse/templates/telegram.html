@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2.html' %}
+{% endblock %}
+
+{% block content %}
+    <section class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>邀请好友记录</h2>
+                </div>
+              </div>
+              <div class="col-md-offset-3 col-sm-6">
+                <table class="table table-striped">
+                    <caption><h3>我的好友</h3></caption>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>用户</th>
+                      <th>好友</th>
+                      <th>奖金(DCB)</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.dcb_num }}</td>
+                        <td>{% if user.status %}
+                            已发送
+                            {% else %}
+                            待发送
+                        {% endif %}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock %}

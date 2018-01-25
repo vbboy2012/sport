@@ -24,6 +24,9 @@
                   <label>可接受的货币: Ethereum</label><br>
                   <label>令牌私募参阶段考价格: 1 ETH = {{ privatePrice }} DCB</label><br>
                   <label>令牌公开售卖参考价格: 1 ETH = {{ publicPrice }} DCB</label><br>
+                  {% if request.user.is_kyc == 1 %}
+                  <label><a href="/address">查看认筹合约地址</a></label><br>
+                  {% endif %}
                   {% if stage != 3 %}
                   <label>公开售卖时间(新加坡时间)</label><br>
                   <label>{{ countdown|date:"Y-m-d H:i:s" }}-{{ endDate|date:"Y-m-d H:i:s" }}</label>
@@ -58,12 +61,8 @@
                 display: block;
             {% endif %}">
                 <div class="col-md-offset-3 col-sm-6">
-                  <p class="text-center">{{ privateCount }} DCB</p>
-                  <div class="progress">
-                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
-                        <span class="sr-only">20% Complete</span>
-                      </div>
-                  </div>
+                  <p class="text-center">{{ publicCount }} DCB</p>
+
                 </div>
             </div>
               <div class="row">
@@ -84,10 +83,10 @@
                           <th scope="row">{{ forloop.counter }}</th>
                           <td>{{ token.eth_num }}</td>
                           <td>{{ token.dcb_num }}</td>
-                          <td>{% if user.status %}
-                            已释放
+                          <td>{% if token.status %}
+                            已发送
                             {% else %}
-                            待释放
+                            待发送
                         {% endif %}</td>
                         </tr>
                   {% endfor %}

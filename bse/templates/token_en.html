@@ -24,6 +24,9 @@
                   <label>Accepted Currency: Ethereum</label><br>
                   <label>Token Private Placement Price will be: 1 ETH = {{ privatePrice }} DCB</label><br>
                   <label>Token Public Sale Price will be: 1 ETH = {{ publicPrice }} DCB</label><br>
+                  {% if request.user.is_kyc == 1 %}
+                  <label><a href="/address">View the contract address</a></label><br>
+                  {% endif %}
                   {% if stage != 3 %}
                   <label>start selling time</label><br>
                   <label>{{ countdown }}-{{ endDate }}</label>
@@ -58,12 +61,8 @@
                 display: block;
             {% endif %}">
                 <div class="col-md-offset-3 col-sm-6">
-                  <p class="text-center">{{ privateCount }} DCB</p>
-                  <div class="progress">
-                      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
-                        <span class="sr-only">20% Complete</span>
-                      </div>
-                  </div>
+                  <p class="text-center">{{ publicCount }} DCB</p>
+
                 </div>
             </div>
               <div class="row">
@@ -79,12 +78,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                  {% for user in users %}
+                  {% for token in tokens %}
                         <tr>
                           <th scope="row">{{ forloop.counter }}</th>
-                          <td>{{ user.eth_num }}</td>
-                          <td>{{ user.dcb_num }}</td>
-                          <td>{% if user.status %}
+                          <td>{{ token.eth_num }}</td>
+                          <td>{{ token.dcb_num }}</td>
+                          <td>{% if token.status %}
                             Successful
                             {% else %}
                             Wait for send

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2_en.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>TOKEN SALE</h2>
+                </div>
+                  <label>Contract ETH address</label><br>
+                  <label style="background: #f0f2f4">0x1bD35E1f87D9F3870Ff8b3afED0eb1b629033588</label><br>
+                  <img src="{% static 'images/address.jpeg' %}" style="width: 200px"><br>
+                  <label>You will receive your purchased DCB tokens at this ETH address you provide us.</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="col-md-offset-3 col-sm-6">
+                    <p>To ensure security, it is recommended that you send a small amount of ETH to the crowdsale address (for example, 0.1 ETH). After verifying that the DCB tokens is sent to your address successfully, you can send the remaining ETHs in batches.</p>
+                    <p>Be careful: Please do not use the exchange to provide address as KYC certification address, otherwise your token will hit the exchange account and cause unnecessary losses</p>
+                      <p>If you do not have a ETH address.You can choose <a href="https://www.myetherwallet.com">myetherwallet</a> or <a href="https://token.im">imtoken</a></p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

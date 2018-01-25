@@ -5,6 +5,7 @@ class RegisterForm(forms.Form):
     username = forms.CharField(label='用户名',max_length=100)
     password1 = forms.CharField(label='密码',widget=forms.PasswordInput())
     password2 = forms.CharField(label='密码', widget=forms.PasswordInput())
+    vercode = forms.CharField(label='验证码', max_length=10, required=False)
     code = forms.CharField(label='邀请码', max_length=10,required=False)
 
 class LoginForm(forms.Form):

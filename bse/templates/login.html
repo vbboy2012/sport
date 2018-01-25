@@ -68,13 +68,16 @@
                 data: data,
                 success: function (result) {
                     if (result.status == 1){
-                        location.href = '/';
+                        location.href = '/user';
                     }
                     else if(result.status == 2){
                         alert("账户被冻结")
                     }
                     else if(result.status == 3){
                         alert("账户或密码错误")
+                    }
+                    else if(result.status == 5){
+                        location.href = '/send?email='+result.email;
                     }
                 },
             });

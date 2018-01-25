@@ -68,13 +68,16 @@
                 data: data,
                 success: function (result) {
                     if (result.status == 1){
-                        location.href = '/';
+                        location.href = '/user  ';
                     }
                     else if(result.status == 2){
                         alert("The account was frozen")
                     }
                     else if(result.status == 3){
                         alert("Incorrect email or password")
+                    }
+                    else if(result.status == 5){
+                        location.href = '/send?email='+result.email;
                     }
                 },
             });

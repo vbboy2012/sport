@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN = 'http://127.0.0.1:8000'
+DOMAIN = 'http://www.daoclub.org'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
@@ -87,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sport',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'Okfuckyou123',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -126,10 +126,11 @@ USE_I18N = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/Users/vbboy/Documents/PyProjects/sport/bse/static'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'noreply@daoclub.org'
-EMAIL_HOST_PASSWORD = 'Okfuckyou123'
+EMAIL_HOST_PASSWORD = 'bCuH3u8hHdPLZGcd'
 EMAIL_USE_SSL = True

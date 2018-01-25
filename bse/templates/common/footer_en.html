@@ -69,6 +69,10 @@
                 alert("The ETH address can not be empty");
                 return false;
             }
+            if (address.length != 42){
+                alert("Please enter the correct ETH address");
+                return false;
+            }
             var data = $("#address-form").serialize();
             $.ajax({
                 type: 'POST',
@@ -76,10 +80,32 @@
                 data: data,
                 success: function (result) {
                     if (result.status == 1){
-                        location.href = '/verifyInfo';
+                        location.href = '/user';
                     }
                     else if(result.status == 2){
                         alert("This ETH address already exists")
+                    }
+                },
+            });
+        });
+
+        $("#add-name").click(function () {
+            var name = $("input[name='name']").val();
+            if (name == ""){
+                alert("The First Name can not be empty");
+                return false;
+            }
+            var data = $("#name-form").serialize();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'addName' %}",
+                data: data,
+                success: function (result) {
+                    if (result.status == 1){
+                        location.href = '/user';
+                    }
+                    else if(result.status == 2){
+                        alert("This First Name already exists")
                     }
                 },
             });
@@ -94,7 +120,7 @@
                 data: data,
                 success: function (result) {
                     if (result.status == 1){
-                        location.href = result.url;
+                        location.reload(true)
                     }
                 },
             });
@@ -109,7 +135,7 @@
                 data: data,
                 success: function (result) {
                     if (result.status == 1){
-                        location.href = result.url;
+                        location.reload(true)
                     }
                 },
             });
@@ -138,6 +164,7 @@
                 success: function (result) {
                     if (result == 1){
                         alert("Your Message has been Successfully Sent!")
+                        location.href = '/';
                     }else if(result == 2){
                         alert("Your message is being dealt with!")
                     }
@@ -164,6 +191,7 @@
                 success: function (result) {
                     if (result == 1){
                         alert("Submit success!")
+                        location.href = '/';
                     }else if(result == 2){
                         alert("Unable to repeat submit!")
                     }

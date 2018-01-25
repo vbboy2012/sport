@@ -8,16 +8,13 @@ from django.shortcuts import render
 from django.utils import timezone
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login as auth_login,logout as auto_logout
-from .models import User,Country,Kyc,Contact,Reserve,Bonus,Config,Token as myToken
+from .models import User,Country,Kyc,Contact,Reserve,Bonus,Config,Token as myToken,Telegram,Noip,Verification
 from django.http import HttpResponse,HttpResponseRedirect,JsonResponse
 from .Token import Token
 from django.conf import settings
-import random,smtplib
+import random,smtplib,json
 from email.mime.text import MIMEText
 from email.utils import formataddr
-from django.core.mail import EmailMessage
-from django.template import loader
-from django.core import mail
 from django.core.mail import EmailMultiAlternatives
 import requests
 
@@ -40,9 +37,24 @@ def index(request):
 
 def register(request):
     if request.method == 'POST':
+        regip = get_client_ip(request)
+        try:
+            Noip.objects.get(ip=regip)
+            isLock = True
+        except:
+            isLock = False
+        if isLock:
+            data = {'status': 5}
+            return JsonResponse(data, safe=False)
         form = RegisterForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
+            try:
+                verification = Verification.objects.get(email=cd['username'],code=cd['vercode'])
+                Verification.objects.filter(email=cd['username']).delete()
+            except:
+                data = {'status': cd['vercode']}
+                return JsonResponse(data, safe=False)
             if User.objects.filter(username=cd['username']):
                 data = {'status': 1}
                 return JsonResponse(data,safe=False)
@@ -54,11 +66,20 @@ def register(request):
                                           '5', '6', '7', '8', '9'], 6))
                     if not User.objects.filter(icode=icode):
                         break
-                user = User.objects.create_user(username=cd['username'], password=cd['password1'], icode=icode,pcode=cd['code'])
+                if cd['code']:
+                    try:
+                        parent = User.objects.get(icode=cd['code'])
+                        if parent.is_active == 0:
+                            data = {'status': 4}
+                            return JsonResponse(data, safe=False)
+                    except:
+                        data = {'status': 3}
+                        return JsonResponse(data, safe=False)
+                user = User.objects.create_user(username=cd['username'], password=cd['password1'], icode=icode,pcode=cd['code'],ip=regip)
                 user.save()
-                #Login
-                auth_login(request, user)
-                data = {'status':2, 'email':cd['username']}
+                # bonus = Bonus(user_id=user.id, email=user.username, dcb_bonus=100, hash=timezone.now(), status=0)
+                # bonus.save()
+                data = {'status': 2, 'email': cd['username']}
                 return JsonResponse(data, safe=False)
     else:
         form = LoginForm()
@@ -69,6 +90,17 @@ def register(request):
             TemplateName = 'register_en.html'
         return render(request, TemplateName, {'form': form})
 
+def get_client_ip(request):
+    try:
+        real_ip = request.META['HTTP_X_FORWARDED_FOR']
+        regip = real_ip.split(",")[0]
+    except:
+        try:
+            regip = request.META['REMOTE_ADDR']
+        except:
+            regip = ""
+    return regip
+
 def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -77,7 +109,10 @@ def login(request):
             user = authenticate(request,username=cd['username'],
                                 password=cd['password'])
             if user is not None:
-                if user.is_active == 1:
+                if user.checkEmail == 0:
+                    data = {'status': 5,'email':user.username}
+                    return JsonResponse(data, safe=False)
+                elif user.is_active == 1:
                     auth_login(request, user)
                     data = {'status': 1}
                     return JsonResponse(data, safe=False)
@@ -91,13 +126,21 @@ def login(request):
             data = {'status': 4}
             return JsonResponse(data, safe=False)
     else:
-        form = LoginForm()
-        user_config = getUserConfig(request)
-        if user_config['language'] == 'Chinese':
-            TemplateName = 'login.html'
+        if request.user.is_authenticated:
+            user_config = getUserConfig(request)
+            if user_config['language'] == 'Chinese':
+                TemplateName = 'user.html'
+            else:
+                TemplateName = 'user_en.html'
+            return render(request, TemplateName)
         else:
-            TemplateName = 'login_en.html'
-        return render(request, TemplateName, {'form': form})
+            form = LoginForm()
+            user_config = getUserConfig(request)
+            if user_config['language'] == 'Chinese':
+                TemplateName = 'login.html'
+            else:
+                TemplateName = 'login_en.html'
+            return render(request, TemplateName, {'form': form})
 
 def logout(request):
     auto_logout(request)
@@ -112,39 +155,32 @@ def activate(request, token):
     try:
         username = token_confirm.confirm_validate_token(token)
     except:
-        return render(request, 'activate.html', {'message': 1})
+        return render(request, TemplateName, {'message': 1})
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
         return render(request, TemplateName, {'message': 2})
     user.checkEmail = True
     user.save()
+    auth_login(request, user)
     return render(request, TemplateName, {'message': 3})
 
 def send(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            email = request.POST['email']
-            #需查询是否有这个邮箱注册
-            sendHtmlmail(email)
-            return JsonResponse('1', safe=False)
-        else:
-            email = request.GET['email']
-            # 需查询是否有这个邮箱注册
-            sendHtmlmail(email)
-            user_config = getUserConfig(request)
-            if user_config['language'] == 'Chinese':
-                TemplateName = 'send.html'
-            else:
-                TemplateName = 'send_en.html'
-            return render(request, TemplateName,{'email':email})
+    if request.method == 'POST':
+        email = request.POST['email']
+        # 需查询是否有这个邮箱注册
+        sendHtmlmail(email)
+        return JsonResponse('1', safe=False)
     else:
+        email = request.GET['email']
+        # 需查询是否有这个邮箱注册
+        sendHtmlmail(email)
         user_config = getUserConfig(request)
         if user_config['language'] == 'Chinese':
-            TemplateName = 'login.html'
+            TemplateName = 'send.html'
         else:
-            TemplateName = 'login_en.html'
-        return render(request, TemplateName)
+            TemplateName = 'send_en.html'
+        return render(request, TemplateName, {'email': email})
 
 def sendmail(email):
     token = token_confirm.generate_validate_token(email)
@@ -176,9 +212,41 @@ def sendHtmlmail(email):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
 
+def sendCode(request):
+    if request.method == 'POST':
+        email = request.POST['username']
+        if User.objects.filter(username=email):
+            data = {'status': 2}
+            return JsonResponse(data, safe=False)
+        code = "".join(random.sample(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                                      'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+                                      'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4',
+                                      '5', '6', '7', '8', '9'], 6))
+        subject, from_email, to = 'Verify email address', settings.EMAIL_HOST_USER, email
+        text_content = 'Thank you! Your verification code:'+code
+
+        html_content = '<p>您收到的验证码</p>'
+        html_content += '<p><strong>'+code+'</strong></p>'
+        html_content += '<br><br><br>'
+        html_content += '<p>The verification code you received.</p>'
+        html_content += '<p><strong>'+code+'</strong></p>'
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        vercode = Verification(email=email,code=code,status=0)
+        vercode.save()
+        data = {'status': 1}
+        return JsonResponse(data, safe=False)
+
 def user(request):
     if request.user.is_authenticated:
         users = Bonus.objects.filter(user_id=request.user.id)
+        dcbCount = 0
+        for user in users:
+            dcbCount += user.dcb_bonus
+        tokens = myToken.objects.filter(user_id=request.user.id)
+        for token in tokens:
+            dcbCount += token.dcb_num
         try:
             kyc = Kyc.objects.get(user_id=request.user.id)
         except:
@@ -188,7 +256,7 @@ def user(request):
             TemplateName = 'user.html'
         else:
             TemplateName = 'user_en.html'
-        return render(request, TemplateName,{'users':users,'kyc':kyc})
+        return render(request, TemplateName,{'users':users,'kyc':kyc,'dcbCount':dcbCount})
     else:
         user_config = getUserConfig(request)
         if user_config['language'] == 'Chinese':
@@ -234,6 +302,7 @@ def token(request):
         return render(request, TemplateName)
 
 def addAddress(request):
+    user_config = getUserConfig(request)
     if request.user.is_authenticated:
         if request.method == 'POST':
             address = request.POST['address']
@@ -248,13 +317,25 @@ def addAddress(request):
                 data = {'status': 1}
                 return JsonResponse(data, safe=False)
         config = Config.objects.get(id=1)
-        user_config = getUserConfig(request)
         if user_config['language'] == 'Chinese':
             TemplateName = 'addAddress.html'
         else:
             TemplateName = 'addAddress_en.html'
         return render(request, TemplateName,{'config':config})
+    if user_config['language'] == 'Chinese':
+        TemplateName = 'login.html'
+    else:
+        TemplateName = 'login_en.html'
+    return render(request, TemplateName)
+
+def address(request):
     user_config = getUserConfig(request)
+    if request.user.is_authenticated:
+        if user_config['language'] == 'Chinese':
+            TemplateName = 'address.html'
+        else:
+            TemplateName = 'address_en.html'
+        return render(request, TemplateName)
     if user_config['language'] == 'Chinese':
         TemplateName = 'login.html'
     else:
@@ -336,7 +417,7 @@ def ChangeLanguage(request):
         # 语言改变后改变session 和 cookie
         request.session['user_config'] = user_config
         request.session.modified = True
-        data = {'status': 1,'url':(user_config['thisTemplateName']=="index" and "/" or user_config['thisTemplateName'])}
+        data = {'status': 1}
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse('0', safe=False)
@@ -363,12 +444,37 @@ def getUserConfig(request):
 
 def queryico(request):
     url = "http://api.etherscan.io/api"
-    params = "module=account&action=txlist&address=0x97da2c23347a8f9360e7a674bffc163b19bae529&startblock=0&endblock=99999999&sort=asc&apikey=EGTSEJ228H579APFKR98ZBPS2CFSNTMBIW"
+    params = "module=account&action=txlist&address=0x1bD35E1f87D9F3870Ff8b3afED0eb1b629033588&startblock=0&endblock=99999999&sort=asc&apikey=EGTSEJ228H579APFKR98ZBPS2CFSNTMBIW"
+    if unlockAccount() == False:
+        return JsonResponse("unlockAccount False", safe=False)
     response = requests.get(url,params).json()
     for item in response['result']:
+        if item['isError'] == "1":
+            continue
         try:
             user = User.objects.get(eth_address=item['from'])
         except:
+            wei = int(item['value'])
+            ethNum = wei / 1000 / 1000 / 1000 / 1000 / 1000 / 1000
+            config = Config.objects.get(id=1)
+            if config.private_is_over:
+                dcbCount = ethNum * config.public_price
+            else:
+                dcbCount = ethNum * config.private_price
+            try:
+                token = myToken(user_id=1, eth_num=ethNum, dcb_num=dcbCount, hash=item['hash'], status=1)
+                token.save()
+                if config.private_is_over:
+                    config.public_received_token += dcbCount
+                else:
+                    config.private_received_token += dcbCount
+                config.save()
+                sendCount = int(dcbCount * 10000)
+                sendCount = "{:064x}".format(sendCount)
+                toAddr = item['from'][2:]
+                response = sendToken(toAddr, sendCount)
+            except:
+                continue
             continue
         wei = int(item['value'])
         ethNum = wei / 1000 / 1000 / 1000 / 1000 / 1000 / 1000
@@ -378,8 +484,17 @@ def queryico(request):
         else:
             dcbCount = ethNum * config.private_price
         try:
-            token = myToken(user_id=user.id,eth_num=ethNum,dcb_num=dcbCount,hash=item['hash'],status=0)
+            token = myToken(user_id=user.id,eth_num=ethNum,dcb_num=dcbCount,hash=item['hash'],status=1)
             token.save()
+            if config.private_is_over:
+                config.public_received_token += dcbCount
+            else:
+                config.private_received_token += dcbCount
+            config.save()
+            sendCount = int(dcbCount * 10000)
+            sendCount = "{:064x}".format(sendCount)
+            toAddr = item['from'][2:]
+            response = sendToken(toAddr, sendCount)
         except:
             continue
         # 给上级奖金
@@ -390,8 +505,138 @@ def queryico(request):
                 continue
             dcbCount = dcbCount * 0.05
             try:
-                bonus = Bonus(user_id=parent.id, email=parent.username, dcb_bonus=dcbCount, hash=item['hash'],status=0)
+                bonus = Bonus(user_id=parent.id, email=user.username, dcb_bonus=dcbCount, hash=item['hash'],status=1)
                 bonus.save()
+                if config.private_is_over:
+                    config.public_received_token += dcbCount
+                else:
+                    config.private_received_token += dcbCount
+                config.save()
+                sendCount = int(dcbCount * 10000)
+                sendCount = "{:064x}".format(sendCount)
+                toAddr = parent.eth_address[2:]
+                response = sendToken(toAddr, sendCount)
             except:
                 continue
     return JsonResponse("end", safe=False)
+
+def unlockAccount():
+    url = 'http://101.132.99.27:8332'
+    headers = {'content-type': 'application/json'}
+    unlockAccount = {
+        "jsonrpc": "2.0",
+        "method": "personal_unlockAccount",
+        "params": ["0xc1f1D4b27623EA722b1B3C10F509aa6C9c05E81C", "okfuckyoujzb2015", 300],
+        "id": 86}
+    response = requests.post(
+        url, data=json.dumps(unlockAccount), headers=headers).json()
+    try:
+        if response['result']:
+            return True
+    except:
+        return False
+
+def sendToken(to,num):
+    url = 'http://101.132.99.27:8332'
+    headers = {'content-type': 'application/json'}
+    payload = {
+        "method": "eth_sendTransaction",
+        "params": [{
+            "from": "0xc1f1D4b27623EA722b1B3C10F509aa6C9c05E81C",
+            "to": "0xf1Db55245c0d293c96C3E8061b202063BBa71502",
+            "data": "0xa9059cbb000000000000000000000000"+to+num}],
+        "jsonrpc": "2.0",
+        "id": 86,
+    }
+    response = requests.post(
+        url, data=json.dumps(payload), headers=headers).json()
+    return response
+
+# def sendTokenasaddress(request,to,dcbCount):
+#     if unlockAccount() == False:
+#         return JsonResponse("unlockAccount False", safe=False)
+#     dcbCount = int(dcbCount)
+#     sendCount = int(dcbCount * 10000)
+#     sendCount = "{:064x}".format(sendCount)
+#     toAddr = to[2:]
+#     response = sendToken(toAddr, sendCount)
+#     return JsonResponse(response, safe=False)
+
+def invitation(request):
+    try:
+        offset = Telegram.objects.last()
+    except:
+        offset = 0
+    if offset:
+        url = "https://api.telegram.org/bot548122025:AAEFgMrQZNvmD_wA7DC9htxa5tskdqgYrLs/getUpdates?offset="+offset.updateID+"&limit=100"
+    else:
+        url = "https://api.telegram.org/bot548122025:AAEFgMrQZNvmD_wA7DC9htxa5tskdqgYrLs/getUpdates"
+    response = requests.get(url,verify=False).json()
+    for user in response['result']:
+        try:
+            if user['message']['new_chat_member']:
+                telegram = Telegram(first_name=user['message']['from']['first_name'],name=user['message']['new_chat_member']['first_name'],dcb_num=100,hash=user['message']['new_chat_member']['id'],updateID=user['update_id'],status=0)
+                telegram.save()
+        except:
+            continue
+    try:
+        telegram = Telegram(first_name="#111",name="#222", dcb_num=0,hash=response['result'][-1]['update_id'], updateID=response['result'][-1]['update_id'], status=0)
+        telegram.save()
+    except:
+        return JsonResponse("end", safe=False)
+    return JsonResponse("end",safe=False)
+
+def telegram(request):
+    user_config = getUserConfig(request)
+    if request.user.is_authenticated:
+        if user_config['language'] == 'Chinese':
+            TemplateName = 'telegram.html'
+        else:
+            TemplateName = 'telegram_en.html'
+        users = Telegram.objects.filter(first_name=request.user.telegram_name)
+        return render(request, TemplateName,{"users":users})
+    if user_config['language'] == 'Chinese':
+        TemplateName = 'login.html'
+    else:
+        TemplateName = 'login_en.html'
+    return render(request, TemplateName)
+
+def addName(request):
+    user_config = getUserConfig(request)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            name = request.POST['name']
+            try:
+                user = User.objects.get(telegram_name=name)
+                data = {'status': 2}
+                return JsonResponse(data, safe=False)
+            except:
+                user = User.objects.get(id=request.user.id)
+                user.telegram_name = name
+                user.save()
+                data = {'status': 1}
+                return JsonResponse(data, safe=False)
+        config = Config.objects.get(id=1)
+        if user_config['language'] == 'Chinese':
+            TemplateName = 'addName.html'
+        else:
+            TemplateName = 'addName_en.html'
+        return render(request, TemplateName,{'config':config})
+    if user_config['language'] == 'Chinese':
+        TemplateName = 'login.html'
+    else:
+        TemplateName = 'login_en.html'
+    return render(request, TemplateName)
+
+# def eth(request):
+#     url = 'http://101.132.99.27:8332'
+#     headers = {'content-type': 'application/json'}
+#     payload = {
+#         "method": "personal_newAccount",
+#         "params": ['z35580113'],
+#         "jsonrpc": "2.0",
+#         "id": 0,
+#     }
+#     response = requests.post(
+#         url, data=json.dumps(payload), headers=headers).json()
+#     return JsonResponse(response, safe=False)

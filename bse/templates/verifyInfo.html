@@ -33,7 +33,7 @@
                         <select name="country" class="form-control">
                         <option value="">请选择国家</option>
                             {% for c in countryList %}
-                                <option value="{{ c.id }}" {% if c.id == kyc.country %}selected="selected"{% endif %}>{{ c.en_name }}</option>
+                                <option value="{{ c.id }}" {% if c.id == kyc.country %}selected="selected"{% endif %}>{{ c.name }}</option>
                             {% endfor %}
                         </select>
                     </div>

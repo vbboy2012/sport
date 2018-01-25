@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block header %}
+{% include 'common/header2_en.html' %}
+{% endblock %}
+
+{% block content %}
+<section id="contact" class="contact white">
+      <div class="contact-info" id="contact-form">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <span class="sub-head">welcome</span>
+                <div class="title">
+                  <h2>Add telegram FirstName</h2>
+                </div>
+                  <label>To ensure that you are able to identify the friends you invite</label><br>
+                  <label>Please add your First Name at the telegram，Don't add LastName</label><br>
+                  <label>f the name has already existed, please try again after the telegram is replaced.</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <form class="form-horizontal" method="post" id="name-form">
+                    {% csrf_token %}
+                  <div class="col-md-offset-3 col-sm-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="First Name" name="name">
+                    </div>
+                      <div class="form-group">
+                      <button type="button" class="btn btn-block" id="add-name">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -3,17 +3,18 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import User,Kyc,Contact,Country,Reserve,Bonus,Config,Token
+from .models import User,Kyc,Contact,Country,Reserve,Bonus,Config,Token,Telegram
 
 # Register your models here.
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username','eth_address', 'pcode', 'icode','date_joined','last_login','checkEmail','is_kyc')
-    search_fields = ('username','eth_address')
+    list_display = ('username','eth_address', 'pcode', 'icode','date_joined','last_login','checkEmail','is_kyc','ip')
+    search_fields = ('username','eth_address','ip','pcode','icode')
 
 class KycAdmin(admin.ModelAdmin):
     list_display = ('user','country','first_name','last_name','id_type','id_number','image_data1','image_data2','image_data3')
     readonly_fields = ('image_data1','image_data2','image_data3',)  # 必须加这行 否则访问编辑页面会报错
+    search_fields = ('user__username','first_name')
 
     def image_data1(self, obj):
         if obj.photo1:
@@ -54,6 +55,10 @@ class BonusAdmin(admin.ModelAdmin):
 class TokenAdmin(admin.ModelAdmin):
     list_display = ('user','eth_num','dcb_num','status')
 
+class TelegramAdmin(admin.ModelAdmin):
+    list_display = ('first_name','name','dcb_num','updateID','status')
+
+
 
 admin.site.register(User,UserAdmin)
 admin.site.register(Kyc,KycAdmin)
@@ -62,4 +67,5 @@ admin.site.register(Country,CountryAdmin)
 admin.site.register(Reserve,ReserveAdmin)
 admin.site.register(Bonus,BonusAdmin)
 admin.site.register(Token,TokenAdmin)
+admin.site.register(Telegram,TelegramAdmin)
 admin.site.register(Config)
